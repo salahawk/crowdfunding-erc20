@@ -26,6 +26,7 @@ contract CrowdfundingCampaign {
     event ProjectFunded(uint256 projectId, address funder, uint256 amount);
     event ProjectGoalReached(uint256 projectId);
     event FundsRefunded(uint256 projectId, address funder, uint256 amount);
+    event FundWithdrawn(uint256 projectId, uint256 amount);
 
     constructor(address tokenAddress) {
         crowdfundToken = IERC20(tokenAddress);
@@ -95,6 +96,7 @@ contract CrowdfundingCampaign {
             crowdfundToken.transfer(project.owner, amount),
             "Token transfer failed"
         );
+        emit FundWithdrawn(projectId, amount);
     }
 
     function refundPledge(uint256 projectId) external {

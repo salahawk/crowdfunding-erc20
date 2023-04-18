@@ -7,9 +7,7 @@ This project implements a crowdfunding platform using Solidity smart contracts a
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-- [Usage](#usage)
-  - [Deploying Contracts](#deploying-contracts)
-  - [Interacting with Contracts](#interacting-with-contracts)
+- [Deploying Contracts](#deploying-contracts)
 - [Testing](#testing)
 - [Security](#security)
 - [Built With](#built-with)
@@ -40,9 +38,7 @@ cd crowdfunding-erc20
 npm install
 ```
 
-## Usage
-
-### Deploying Contracts
+## Deploying Contracts
 
 1. Create a `.env` file in the project root and add your wallet's private key and an Ethereum network RPC URL: (Optional: not required if you want to test only)
 ```bash
@@ -68,6 +64,10 @@ To run tests on the smart contracts, execute the following command in the projec
 ```bash
 npx hardhat test
 ```
+
+Here's the test result (on my end):
+![Test script result](test-result.png)
+
 
 
 ## Security
