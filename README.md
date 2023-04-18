@@ -57,6 +57,9 @@ npx hardhat run --network <network-name> scripts/deploy.js
 ```
 Replace `<network-name>` with the name of the network you want to deploy to, such as `mainnet`, `goerli`, or `localhost`.
 
+Here's the result of deployment on my end:
+![Test script result](deploy-result.png)
+
 
 ## Testing
 

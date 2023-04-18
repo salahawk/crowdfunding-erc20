@@ -1,12 +1,27 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  // const Lock = await ethers.getContractFactory("Lock");
-  // const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-  // await lock.deployed();
-  // console.log(
-  //   `Lock with ${ethers.utils.formatEther(lockedAmount)}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  // );
+  const [owner] = await ethers.getSigners();
+  console.log(`Deployer addresses: ${owner.address}`);
+  console.log(
+    `======================================================================`
+  );
+
+  const TOTAL_SUPPLY = 10000000000000;
+  const Token = await ethers.getContractFactory("CrowdfundToken");
+  const token = await Token.deploy(TOTAL_SUPPLY);
+  await token.deployed();
+
+  const CrowdfundingCampaign = await ethers.getContractFactory(
+    "CrowdfundingCampaign"
+  );
+  const crowdfundingCampaign = await CrowdfundingCampaign.deploy(token.address);
+  await crowdfundingCampaign.deployed();
+
+  console.log(`Crowdfund Token deployed to ${token.address}`);
+  console.log(
+    `Crowdfunding Campaign Contract deployed to ${crowdfundingCampaign.address}`
+  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere
