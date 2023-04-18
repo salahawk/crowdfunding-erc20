@@ -2,8 +2,9 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract CrowdfundingCampaign {
+contract CrowdfundingCampaign is ReentrancyGuard {
     struct Project {
         address owner; // project owner
         uint256 goal; // goal of the project
@@ -13,7 +14,7 @@ contract CrowdfundingCampaign {
         mapping(address => uint256) pledges; // mapping of pledges
     }
 
-    IERC20 public crowdfundToken; // interface to crowdfund token
+    IERC20 public immutable crowdfundToken; // interface to crowdfund token
     uint256 public projectCounter; // counter of the project
     mapping(uint256 => Project) public projects; // list of projects
 
@@ -37,9 +38,12 @@ contract CrowdfundingCampaign {
         _;
     }
 
-    function createProject(uint256 goal, uint256 duration) external {
-        require(goal > 0, "goal must be positive");
-        require(duration > 0, "duration must be positive");
+    function createProject(
+        uint256 goal,
+        uint256 duration
+    ) external nonReentrant {
+        require(goal > 0, "Goal must be positive");
+        require(duration > 0, "Duration must be positive");
 
         projectCounter++;
 
@@ -53,7 +57,10 @@ contract CrowdfundingCampaign {
         emit ProjectCreated(projectCounter, msg.sender, goal, duration);
     }
 
-    function fundProject(uint256 projectId, uint256 amount) external {
+    function fundProject(
+        uint256 projectId,
+        uint256 amount
+    ) external nonReentrant {
         require(
             projectId > 0 && projectId <= projectCounter,
             "Invalid project ID"
@@ -65,6 +72,7 @@ contract CrowdfundingCampaign {
             "Project funding has ended"
         );
         require(!project.isFunded, "Project already reached its goal");
+
         require(
             crowdfundToken.transferFrom(msg.sender, address(this), amount),
             "Token transfer failed (may not have approved this transaction)"
@@ -82,7 +90,7 @@ contract CrowdfundingCampaign {
 
     function withdrawFunds(
         uint256 projectId
-    ) external onlyProjectOwner(projectId) {
+    ) external nonReentrant onlyProjectOwner(projectId) {
         Project storage project = projects[projectId];
         require(project.isFunded, "Project funding goal not reached");
         require(
@@ -99,7 +107,7 @@ contract CrowdfundingCampaign {
         emit FundWithdrawn(projectId, amount);
     }
 
-    function refundPledge(uint256 projectId) external {
+    function refundPledge(uint256 projectId) external nonReentrant {
         require(
             projectId > 0 && projectId <= projectCounter,
             "Invalid project ID"

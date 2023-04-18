@@ -21,9 +21,9 @@ These instructions will help you set up the project on your local machine for de
 
 Ensure you have the following software installed on your machine:
 
-- Node.js v12.0+ and npm
-- Hardhat v2.0+ (for development and testing)
-- An Ethereum wallet such as Metamask
+- Node.js v12.0+ and npm (I'm using v18.12.1)
+- Hardhat v2.0+ (for development and testing) (I'm using v2.14.0)
+- An Ethereum wallet such as Metamask (Optional: reuired for testnet/mainnet deployment)
 
 ### Installation
 
@@ -40,7 +40,7 @@ npm install
 
 ## Deploying Contracts
 
-1. Create a `.env` file in the project root and add your wallet's private key and an Ethereum network RPC URL: (Optional: not required if you want to test only)
+1. Create a `.env` file in the project root and add your wallet's private key and an Ethereum network RPC URL: (Optional: not required if you want to test locally only)
 ```bash
 PRIVATE_KEY=your-private-key
 RPC_URL=your-rpc-url
@@ -58,7 +58,7 @@ npx hardhat run --network <network-name> scripts/deploy.js
 Replace `<network-name>` with the name of the network you want to deploy to, such as `mainnet`, `goerli`, or `localhost`.
 
 Here's the result of deployment on my end:
-![Test script result](deploy-result.png)
+![Test script result](./reports/deploy-result.png)
 
 
 ## Testing
@@ -69,13 +69,16 @@ npx hardhat test
 ```
 
 Here's the test result (on my end):
-![Test script result](test-result.png)
+![Test script result](./reports/test-result.png)
 
 
 
 ## Security
 
 The smart contracts have been reviewed for security issues, and the code has been analyzed using Slither. However, it's important to conduct a thorough audit before deploying contracts to a production environment.
+
+Here's the security-check result by Slither (on my end):
+![Test script result](./reports/slither-result.png)
 
 ## Built With
 
